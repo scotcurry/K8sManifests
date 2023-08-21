@@ -15,12 +15,12 @@ spec:
     spec:  # This is the Pod spec https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#podspec-v1-core
       containers:  # This is based on the Container spec https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#container-v1-core
       - name: rssfeedpuller
-        image: scotcurry4/rssfeedpuller:3.813.355
+        image: scotcurry4/rssfeedpuller:3.821.915
         env:  ## These are also set in the Dockerfile.  Need to figure out what takes precident.
         - name: DD_SERVICE
           value: rssfeedpuller
         - name: DD_VERSION
-          value: 3.813.355
+          value: 3.821.915
         - name: DD_ENV
           value: prod
 

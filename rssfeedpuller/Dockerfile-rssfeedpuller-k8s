@@ -1,5 +1,8 @@
 # This pulls the base image down to add the code to, it sets the working directory to /App
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+
+# We need to tell the container that at the end it is going to listen on this exposed port.
+EXPOSE 6020
 WORKDIR /App
 
 # This copies all of the files in the current directory, meaning that the current directory needs to
