@@ -29,7 +29,7 @@ spec:
         app: rssfeedpuller
         team: curryware
 
-  replicas: 2  # We want two of these things.
+  replicas: 1  # We want two of these things.
 
   selector:  #These fields have to match the metadata
     matchLabels: 
