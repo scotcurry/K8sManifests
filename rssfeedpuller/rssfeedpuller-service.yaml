@@ -13,6 +13,6 @@ spec:
       protocol: TCP
       port: 8082  # This is the external port that is used to access the service.
       targetPort: 6020  # This port was defined as the container port in the Dockerfile
-      nodePort: 30080
+      # nodePort: 30080
   
-  type: NodePort  # Need to use NodePort as it is the only one that allows for external access.
+  type: ClusterIP  # Need to use NodePort as it is the only one that allows for external access.
