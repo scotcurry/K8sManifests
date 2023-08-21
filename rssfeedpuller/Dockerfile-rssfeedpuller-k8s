@@ -1,0 +1,39 @@
+# This pulls the base image down to add the code to, it sets the working directory to /App
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /App
+
+# This copies all of the files in the current directory, meaning that the current directory needs to
+# be at the root of the project into the container.
+COPY . ./
+
+# Because the dependencies and NuGet packages aren't in the image this command restores them.  The next
+# command compiles the application in the image.  These tools are in the sdk:6.0 image from above.
+RUN dotnet restore
+RUN dotnet publish -c Release -o out
+
+# This is a Docker multi-stage build (https://docs.docker.com/build/building/multi-stage/).  We did what
+# we needed with the sdk:6.0 container and we are now going to move what we need into the aspnet container.
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.21
+WORKDIR /App
+COPY --from=build-env /App/out .
+
+## NOT NEEDED FOR DYNAMIC INSTRUMENTATION
+# This section is required if you want to embed the Datadog agent in the image.  It is going to be
+# commented out in this case because we are going to be using dependency injection and don't want the
+# Datadog tracing library to be installed in the image.  Need to pull down the curl command for a
+# command coming later in the build file.
+## RUN apt-get update
+## RUN apt-get install -y curl
+
+# We need to set the environment variables inside the container.  This is how source code linking works.
+# Need to make sure I understand what setting environment variabls in the K8s deployment does.
+ENV DD_SERVICE=rssfeedpuller
+ENV DD_ENV=prod
+ENV DD_VERSION=${CURRENT_VERSION}
+ENV ASPNETCORE_URLS=http://*:6020
+
+# This tells .NET to launch the application
+CMD ["dotnet", "RSSFeedPuller.dll"]
+
+## To build this container for lab deployment run
+# docker build --file ${HOME}/K8sManifests/rssfeedpuller/Dockerfile-rssfeedpuller-k8s --platform linux/amd64 --tag docker.io/scotcurry4/rssfeedpuller:${CURRENT_VERSION} .

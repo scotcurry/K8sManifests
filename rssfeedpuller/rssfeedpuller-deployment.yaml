@@ -1,0 +1,37 @@
+## The following fields are a REQUIREMENTS for all manifests.  
+apiVersion: apps/v1  # This information is found in the API reference https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#deployment-v1-apps
+kind: Deployment
+
+metadata:  # The name is used to build the pod names in this case.
+  name: rssfeedpuller
+  labels:  # Labels are identifying information vs. annotations which are not identifying information.
+    app: rssfeedpuller
+    team: curryware
+
+## .spec/.template is required for every deployment
+spec:
+
+  template:  # This is a pod template https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates
+    spec:  # This is the Pod spec https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#podspec-v1-core
+      containers:  # This is based on the Container spec https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#container-v1-core
+      - name: rssfeedpuller
+        image: scotcurry4/rssfeedpuller:3.813.355
+        env:  ## These are also set in the Dockerfile.  Need to figure out what takes precident.
+        - name: DD_SERVICE
+          value: rssfeedpuller
+        - name: DD_VERSION
+          value: 3.813.355
+        - name: DD_ENV
+          value: prod
+
+    metadata:  # These labels have to match the selector labels.  My guess is that the selector is what "monitors the pods and if they are right makes a new one."
+      labels:
+        app: rssfeedpuller
+        team: curryware
+
+  replicas: 2  # We want two of these things.
+
+  selector:  #These fields have to match the metadata
+    matchLabels: 
+      app: rssfeedpuller
+      team: curryware
