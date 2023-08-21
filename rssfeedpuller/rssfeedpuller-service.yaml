@@ -11,7 +11,7 @@ spec:
   ports:
     - name: http-port
       protocol: TCP
-      port: 8082  # This is the external port that is used to access the service.
+      port: 6020  # This is the external port that is used to access the service.
       targetPort: 6020  # This port was defined as the container port in the Dockerfile
       # nodePort: 30080
   
