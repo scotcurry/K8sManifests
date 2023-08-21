@@ -4,11 +4,12 @@ kind: Service
 metadata:
   name: rssfeedpuller-service
 
-selector:  # Selector routes service traffic to pods with the label keys and values that match this selector.
-  app: rssfeedpuller
+spec:
+  selector:  # Selector routes service traffic to pods with the label keys and values that match this selector.
+    app: rssfeedpuller
 
-ports:
-  - name: http-port
-    port: 8082  # This is the external port that is used to access the service.
-    targetPort: 6020  # This port was defined as the container port in the Dockerfile
-    type: ClusterIP
+  ports:
+    - name: http-port
+      port: 8082  # This is the external port that is used to access the service.
+      targetPort: 6020  # This port was defined as the container port in the Dockerfile
+      type: ClusterIP
