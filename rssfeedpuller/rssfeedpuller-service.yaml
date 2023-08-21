@@ -10,7 +10,9 @@ spec:
 
   ports:
     - name: http-port
+      protocol: TCP
       port: 8082  # This is the external port that is used to access the service.
       targetPort: 6020  # This port was defined as the container port in the Dockerfile
+      nodePort: 30080
   
-  type: ClusterIP  # Doesn't really matter for this limited implementation, but there are 4 types of Service.
+  type: NodePort  # Need to use NodePort as it is the only one that allows for external access.
