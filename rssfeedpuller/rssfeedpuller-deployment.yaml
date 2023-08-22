@@ -20,7 +20,7 @@ spec:
         - name: DD_SERVICE
           value: rssfeedpuller
         - name: DD_VERSION
-          value: 3.821.915
+          value: 3.821.1198
         - name: DD_ENV
           value: prod
 
