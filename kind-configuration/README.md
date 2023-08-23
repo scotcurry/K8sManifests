@@ -50,4 +50,18 @@ nodes:
 
 ## Networking - Ingress Controller
 
+### Add the Kong Ingress Controller
+
 The steps above allow for the cluster to accept incoming traffic, but there needs to be an ingress controller that maps the traffic.  Trying to use [Ingress Kong](https://docs.konghq.com/kubernetes-ingress-controller/2.1.x/concepts/design/) 
+
+First step is to deploy the Kong Ingress Controller:
+```
+kubectl apply -f https://raw.githubusercontent.com/Kong/kubernetes-ingress-controller/master/deploy/single/all-in-one-dbless.yaml
+```
+
+### Get the ports that are required mapped.
+
+The "easy to read" portion is in the hostports-patch-file.yaml file.  It has been minified to pass it on the command line.
+```
+kubectl patch deployment -n kong proxy-kong -p '{"spec":{"replicas":1,"template":{"spec":{"containers":[{"name":"rssfeedpuller-proxy","ports":[{"containerPort":6020,"hostPort":6020,"name":"rssfeedpuller-tcp","protocol":"TCP"}]}],"nodeSelector":{"ingress-ready":"true"},"tolerations":[{"key":"node-role.kubernetes.io/control-plane","operator":"Equal","effect":"NoSchedule"},{"key":"node-role.kubernetes.io/master","operator":"Equal","effect":"NoSchedule"}]}}}}'
+```
