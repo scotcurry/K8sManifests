@@ -2,9 +2,6 @@
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 
-# If you pass name on the command line it will override this paramter
-name: curryware-kind
-
 # This section is the requirement to allow for ingress to the cluster.
 nodes:
 - role: control-plane

@@ -17,7 +17,7 @@ kind get clusters
 
 If port mapping wasn't set up during cluster initializtion run the following command:
 ```
-kind delete cluster 
+kind delete cluster --name curryware-kind
 ```
 
 To create the cluster use the kind-config.yaml file with the following command:
@@ -47,3 +47,7 @@ nodes:
     hostPort: 6020
     protocol: TCP
 ```
+
+## Networking - Ingress Controller
+
+The steps above allow for the cluster to accept incoming traffic, but there needs to be an ingress controller that maps the traffic.  Trying to use [Ingress Kong](https://docs.konghq.com/kubernetes-ingress-controller/2.1.x/concepts/design/) 
